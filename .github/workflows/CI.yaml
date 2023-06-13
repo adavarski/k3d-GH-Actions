@@ -61,7 +61,7 @@ jobs:
             echo $version1
             
       - name: Commit and push changes
-        uses: uses: actions-js/push@master
+        uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GH_ACTIONS_TOKEN }}
           
