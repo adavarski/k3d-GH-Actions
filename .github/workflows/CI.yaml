@@ -64,6 +64,7 @@ jobs:
            
       - name: Create k3d cluster and deploy app
         uses: AbsaOSS/k3d-action@v2
+     
       - name: "Create single k3d Cluster with imported Registry"
         with:
           cluster-name: CICD-test-cluster
@@ -71,6 +72,7 @@ jobs:
             --agents 3
             --no-lb
             --k3s-arg "--no-deploy=traefik,servicelb,metrics-server@server:*"
+      
       - name: "Docker repo demo"
         run: |
             helm install demo-gh-actions ./helm           
