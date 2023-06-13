@@ -1,1 +1,1 @@
-### GitHub Actions k8s (k3d) demo
+### GitHub Actions k8s demo: k3d & helm
