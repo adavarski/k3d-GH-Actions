@@ -37,8 +37,9 @@ jobs:
         id: build-image
         run: |
            git_hash=$(git rev-parse --short "$GITHUB_SHA")
+           echo '\n\n=== Building image ===\n\n'
            docker build -t davarski/demo-gh-actions:${GITHUB_REF##*/}-$git_hash .
-           echo "Pushing image to DockeHub..."
+           echo '\n\n=== Pushing image ===\n\n'
            docker push davarski/demo-gh-actions:${GITHUB_REF##*/}-$git_hash
 
       - name: Update Version
