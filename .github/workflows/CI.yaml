@@ -31,16 +31,35 @@ jobs:
 
       - name: Run Tests
         run: |
-          python -m pytestdemo:${GITHUB_REF##*/}-$git_hash
+          python -m pytest
         
+      - name: Login to DockerHub
+        id: dockerhub-login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build, tag, and push image to DockerHub
+        id: build-image
+        run: |
+           git_hash=$(git rev-parse --short "$GITHUB_SHA")
+           echo '\n\n=== Building image ===\n\n'
+           docker build -t davarski/demo-gh-actions:${GITHUB_REF##*/}-$git_hash .
+           echo '\n\n=== Pushing image ===\n\n'
+           docker push davarski/demo-gh-actions:${GITHUB_REF##*/}-$git_hash
+      
       - name: Update Version
         run: |
-          git_hash=$(git rev-parse --short "$GITHUB_SHA")
-          version=$(cat ./helm/values.yaml | grep version: | awk '{print $2}')
-          sed -i "s/$version/${GITHUB_REF##*/}-$git_hash/" ./helm/values.yaml
+            echo '\n\n=== Update Version ===\n\n'
+            git_hash=$(git rev-parse --short "$GITHUB_SHA")
+            echo $git_hash
+            version=$(cat ./helm/values.yaml | grep version: | awk '{print $2}')
+            echo $version
+            sed -i "s/$version/${GITHUB_REF##*/}-$git_hash/" ./helm/values.yaml
           
       - name: Commit and push changes
         uses: devops-infra/action-commit-push@v0.3
         with:
-          github_token: ${{ secrets.ARGOCD }}
-          commit_message: Version updated
+           github_token: ${{ secrets.GH_ACTIONS_TOKEN }}
+           commit_message: Version updated   
