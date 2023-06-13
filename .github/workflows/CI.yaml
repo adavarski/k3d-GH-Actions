@@ -62,17 +62,21 @@ jobs:
            github_token: ${{ secrets.ARGOCD }}
            commit_message: Version updated   
            
-      - name: Create k3d cluster and deploy app
-        uses: AbsaOSS/k3d-action@v2
-     
-      - name: "Create single k3d Cluster with imported Registry"
+  run-k8d:
+    name: Create k3d cluster and deploy helm app
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: AbsaOSS/k3d-action@v2
+        name: "Create single k3d Cluster with imported Registry"
         with:
           cluster-name: CICD-test-cluster
           args: >-
             --agents 3
             --no-lb
             --k3s-arg "--no-deploy=traefik,servicelb,metrics-server@server:*"
-      
-      - name: "Docker repo demo"
+      - name: "Helm deploy"
         run: |
-            helm install demo-gh-actions ./helm           
+           helm install -n default demo-gh-actions ./helm
+           kubectl get po
