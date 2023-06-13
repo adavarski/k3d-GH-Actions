@@ -49,9 +49,6 @@ jobs:
            echo '\n\n=== Pushing image ===\n\n'
            docker push davarski/demo-gh-actions:${GITHUB_REF##*/}-$git_hash
       
-      
-      - name: Checkout repository
-        uses: actions/checkout@v2
       - name: Update Version
         run: |
             echo '\n\n=== Update Version ===\n\n'
@@ -60,7 +57,6 @@ jobs:
             version=$(cat ./helm/values.yaml | grep version: | awk '{print $2}')
             echo $version
             sed -i "s/$version/${GITHUB_REF##*/}-$git_hash/" ./helm/values.yaml
-            cat ./helm/values.yaml | grep version: | awk '{print $2} 
           
       - name: Commit and push changes
         uses: devops-infra/action-commit-push@v0.3
