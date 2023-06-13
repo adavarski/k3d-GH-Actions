@@ -79,4 +79,5 @@ jobs:
       - name: "Helm deploy"
         run: |
            helm install -n default demo-gh-actions ./helm
+           sleep 60
            kubectl get po
