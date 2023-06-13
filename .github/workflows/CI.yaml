@@ -48,7 +48,10 @@ jobs:
            docker build -t davarski/demo-gh-actions:${GITHUB_REF##*/}-$git_hash .
            echo '\n\n=== Pushing image ===\n\n'
            docker push davarski/demo-gh-actions:${GITHUB_REF##*/}-$git_hash
-
+      
+      
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Update Version
         run: |
             echo '\n\n=== Update Version ===\n\n'
