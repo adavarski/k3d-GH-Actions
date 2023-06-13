@@ -56,18 +56,7 @@ jobs:
             version=$(cat ./helm/values.yaml | grep version: | awk '{print $2}')
             sed -i "s/$version/${GITHUB_REF##*/}-$git_hash/" ./helm/values.yaml
           
-      - name: Commit and push changes
-        uses: devops-infra/action-commit-push@v0.3
-        with:
-           github_token: ${{ secrets.ARGOCD }}
-           commit_message: Version updated   
-           
-  run-k8d:
-    name: Create k3d cluster and deploy helm app
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
+        
       - uses: AbsaOSS/k3d-action@v2
         name: "Create single k3d Cluster with imported Registry"
         with:
@@ -79,4 +68,5 @@ jobs:
       - name: "Helm deploy"
         run: |
            helm install -n default demo-gh-actions ./helm
+           sleep 60
            kubectl get po
