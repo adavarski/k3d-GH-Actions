@@ -1,7 +1,8 @@
-name: runs-tests-and-linter
+name: CI
 
 on:
-  workflow_call:
+  push:
+    branches: [ main ]
 
 jobs:
   build:
