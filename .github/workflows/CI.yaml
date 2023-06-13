@@ -59,7 +59,7 @@ jobs:
       - name: Commit and push changes
         uses: devops-infra/action-commit-push@v0.3
         with:
-           github_token: ${{ secrets.GITHUB_TOKEN }}
+           github_token: ${{ secrets.GH_ACTIONS_TOKEN }}
            commit_message: Version updated   
            
   run-k8d:
