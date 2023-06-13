@@ -61,7 +61,7 @@ jobs:
             echo $version1
             
       - name: Commit and push changes
-        uses: devops-infra/action-commit-push@master
+        uses: uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GH_ACTIONS_TOKEN }}
-          commit_message: Version updated 
+          
