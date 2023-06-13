@@ -57,7 +57,9 @@ jobs:
             version=$(cat ./helm/values.yaml | grep version: | awk '{print $2}')
             echo $version
             sed -i "s/$version/${GITHUB_REF##*/}-$git_hash/" ./helm/values.yaml
-          
+            version1=$(cat ./helm/values.yaml | grep version: | awk '{print $2}')
+            echo $version1
+            
       - name: Commit and push changes
         uses: devops-infra/action-commit-push@v0.3
         with:
