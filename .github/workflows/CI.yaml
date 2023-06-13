@@ -32,3 +32,24 @@ jobs:
       - name: Run Tests
         run: |
           python -m pytest
+
+      - name: Build, tag, and push image to DockerHub
+        id: build-image
+        run: |
+           git_hash=$(git rev-parse --short "$GITHUB_SHA")
+           docker build -t davarski/demo-gh-actions:${GITHUB_REF##*/}-$git_hash .
+           echo "Pushing image to DockeHub..."
+           docker push davarski/demo-gh-actions:${GITHUB_REF##*/}-$git_hash
+
+      - name: Update Version
+        run: |
+            git_hash=$(git rev-parse --short "$GITHUB_SHA")
+            version=$(cat ./helm/values.yaml | grep version: | awk '{print $2}')
+            sed -i "s/$version/${GITHUB_REF##*/}-$git_hash/" ./helm/values.yaml
+          
+      - name: Commit and push changes
+        uses: devops-infra/action-commit-push@v0.3
+        with:
+           github_token: ${{ secrets.ARGOCD }}
+           commit_message: Version updated   
+          
