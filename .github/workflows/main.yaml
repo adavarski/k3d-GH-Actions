@@ -67,9 +67,11 @@ jobs:
       - name: "Helm deploy and test"
         run: |
            helm install -n default demo-gh-actions ./helm
-           sleep 120
-           kubectl get pods -n default -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}'
            echo '\n\n=== Test app ===\n\n'
+
+           while [[ $(kubectl get pods -n default -l app=helm-example -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True True" ]]; do echo "waiting for pod" && sleep 1; done
+           kubectl get pods -n default -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}'
+           
            export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=helm-example,app.kubernetes.io/instance=demo-gh-actions" -o jsonpath="{.items[0].metadata.name}")
-           kubectl --namespace default port-forward $POD_NAME 8080:80
+           kubectl --namespace default port-forward $POD_NAME 8080:8000 &
            curl -v localhost:8080
