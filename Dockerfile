@@ -10,6 +10,6 @@ RUN pip install --upgrade pip && \
 
 COPY . /app
 
-EXPOSE 8000
+EXPOSE 80
 
 CMD ["python3", "app.py"]
