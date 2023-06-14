@@ -70,6 +70,16 @@ jobs:
            echo '\n\n=== Testing app ===\n\n'
            sleep 120
            kubectl get pods -n default -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}'
-           export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=helm-example,app.kubernetes.io/instance=demo-gh-actions" -o jsonpath="{.items[0].metadata.name}")
-           kubectl --namespace default port-forward $POD_NAME 8080:8000 &
-           curl -v localhost:8080
+
+      - name: Updating Helm Chart Image Tag in the Main Branch
+        run: |
+          git config user.name  github-actions[bot]
+          git config user.email github-actions[bot]@users.noreply.github.com
+          git add helm/values.yaml
+          git commit -m "Updating Image Tag"
+          echo "${{ secrets.GH_ACTIONS_TOKEN }}"
+          git push https://${{ secrets.GH_ACCESS_TOKEN }}@https://github.com/adavarski/k3d-GH-Actions.git
+
+
+
+
