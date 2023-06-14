@@ -65,8 +65,12 @@ jobs:
             --agents 3
             --no-lb
             --k3s-arg "--no-deploy=traefik,servicelb,metrics-server@server:*"
-      - name: "Helm deploy"
+      - name: "Helm deploy and test"
         run: |
            helm install -n default demo-gh-actions ./helm
-           sleep 120
+           while [[ $(kubectl get pods -n default -l app=demo-gh-actions -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True True" ]]; do echo "waiting for pod" && sleep 1; done
            kubectl get pods -n default -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}'
+           echo '\n\n=== Test app ===\n\n'
+           export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=helm-example,app.kubernetes.io/instance=demo-gh-actions" -o jsonpath="{.items[0].metadata.name}")
+           kubectl --namespace default port-forward $POD_NAME 8080:80
+           curl -v localhost:8080
