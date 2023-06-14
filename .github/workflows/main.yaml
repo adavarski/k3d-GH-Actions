@@ -70,7 +70,7 @@ jobs:
            echo '\n\n=== Testing app ===\n\n'
            kubectl get pods -n default -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}'
 
-      - name: Update Helm Chart (Commit and push changes)
+      - name: Update Helm Chart (Commit and Push changes for ArgoCD)
         uses: devops-infra/action-commit-push@v0.3
         with:
           github_token: ${{ secrets.GHAT }}
