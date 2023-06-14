@@ -75,6 +75,7 @@ jobs:
         run: |
           git config user.name  github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com
+          git config --local --unset-all "http.https://github.com/.extraheader"
           git add helm/values.yaml
           git commit -m "Updating Image Tag"
           git push https://${{ secrets.GH_ACCESS_TOKEN }}@github.com/adavarski/k3d-GH-Actions.git
