@@ -70,13 +70,11 @@ jobs:
            echo '\n\n=== Testing app ===\n\n'
            kubectl get pods -n default -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}'
 
-      - name: Update Helm Chart Image Tag in the Main Branch
-        run: |
-          git config user.name  github-actions[bot]
-          git config user.email github-actions[bot]@users.noreply.github.com
-          git add helm/values.yaml
-          git commit -m "Updating Helm Cahrt: Image Tag"
-          git push https://${{ secrets.GH_ACCESS_TOKEN }}@github.com/adavarski/k3d-GH-Actions.git
+      - name: Update Helm Chart Commit and push changes
+        uses: devops-infra/action-commit-push@v0.3
+        with:
+          github_token: ${{ secrets.GH_ACCESS_TOKEN }}
+          commit_message: Version updated
 
 
 
