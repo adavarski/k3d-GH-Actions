@@ -67,7 +67,7 @@ jobs:
       - name: "Helm deploy and test"
         run: |
            helm install -n default demo-gh-actions ./helm
-           echo '\n\n=== Test app ===\n\n'
+           echo '\n\n=== Testing app ===\n\n'
            sleep 120
            kubectl get pods -n default -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}'
            export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=helm-example,app.kubernetes.io/instance=demo-gh-actions" -o jsonpath="{.items[0].metadata.name}")
