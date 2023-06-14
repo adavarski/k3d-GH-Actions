@@ -71,7 +71,7 @@ jobs:
            sleep 120
            kubectl get pods -n default -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}'
 
-      - name: Updating Helm Chart Image Tag in the Main Branch
+      - name: Update Helm Chart Image Tag in the Main Branch
         run: |
           git config user.name  github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com
