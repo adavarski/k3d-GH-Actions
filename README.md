@@ -7,4 +7,4 @@ K8s is Kubernetes. K3s is a lightweight K8s distribution. K3d is a wrapper to ru
 - Repo Actions secrets and variables -> Add ARGOCD variable with value above PAT
 - Repo Settings -> Actions -> Genreal -> Workflow permissions -> Check Read and write permissions & Allow GH Actions to approve PR
 
-GH Actions workflow: Test Python Code -> Build/Push Image ->  Deploy/Test Helm Chart on K8s -> Update Helm Chart (Image Tag -> for example: feature ArgoCD usage) 
+GH Actions workflow: Test Python Code -> Build/Push Image ->  Deploy/Test Helm Chart on K8s -> Update Helm Chart (Image Tag -> for example: feature ArgoCD usage -> Ref: https://github.com/adavarski/ArgoCD-GitOps-playground) 
