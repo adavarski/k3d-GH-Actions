@@ -71,5 +71,5 @@ jobs:
            sleep 120
            kubectl get pods -n default -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}'
            export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=helm-example,app.kubernetes.io/instance=demo-gh-actions" -o jsonpath="{.items[0].metadata.name}")
-           kubectl --namespace default port-forward $POD_NAME 8080:80 &
+           kubectl --namespace default port-forward $POD_NAME 8080:8000 &
            curl -v localhost:8080
