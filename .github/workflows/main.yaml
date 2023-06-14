@@ -68,14 +68,12 @@ jobs:
         run: |
            helm install -n default demo-gh-actions ./helm
            echo '\n\n=== Testing app ===\n\n'
-           sleep 120
            kubectl get pods -n default -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}'
 
       - name: Update Helm Chart Image Tag in the Main Branch
         run: |
           git config user.name  github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com
-          git config --local --unset-all "http.https://github.com/.extraheader"
           git add helm/values.yaml
           git commit -m "Updating Helm Cahrt: Image Tag"
           git push https://${{ secrets.GH_ACCESS_TOKEN }}@github.com/adavarski/k3d-GH-Actions.git
