@@ -1,4 +1,4 @@
-### GitHub Actions k8s demo: k3d & helm
+### GitHub Actions k8s demo: k3d & helm playground
 
 This is a demo of how K3d can be used as part of a GitHub Actions Workflow for testing Helm charts.
 
